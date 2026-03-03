@@ -1,0 +1,32 @@
+Next.js (React + TS)
+  ├─ Storefront (public)
+  ├─ Cart / Checkout
+  └─ Admin Dashboard (protected)
+
+FastAPI (Python)
+  ├─ Auth (JWT)
+  ├─ Products / Orders API
+  ├─ Inventory Logic
+  └─ Stripe Webhooks
+
+PostgreSQL
+  ├─ Products
+  ├─ Variants / Inventory
+  ├─ Orders
+  └─ Users
+
+External Services
+  ├─ Stripe (payments)
+  └─ Cloudinary / S3 (images)
+
+Business Logic Examples
+
+Prevent checkout if inventory < requested
+
+Atomic stock decrement
+
+Idempotent webhook processing
+
+Price validation (never trust frontend)
+
+Tailwind Dashboard

@@ -1,0 +1,39 @@
+Products:
+id
+name
+description
+price
+active
+created_at
+
+Product Variants:
+id
+product_id
+size
+color
+sku
+
+Inventory:
+variant_id
+quantity
+updated_at
+
+Orders:
+id
+user_email
+total_amount
+status
+created_at
+
+Order Items:
+order_id
+variant_id
+quantity
+price_at_purchase
+
+Product → Variants → Inventory
+Product → Images
+Order → Order Items → Variants
+Order → Payment
+Admin → Audit Logs
+
