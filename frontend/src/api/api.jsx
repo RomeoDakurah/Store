@@ -2,7 +2,7 @@ import axios from "axios";
 
 // --- Axios instance ---
 const API = axios.create({
-  baseURL: "http://127.0.0.1:8000",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 // Request interceptor for private API calls
@@ -28,7 +28,7 @@ API.interceptors.response.use(
 
 // --- Public API for unauthenticated calls ---
 const API_PUBLIC = axios.create({
-  baseURL: "http://127.0.0.1:8000",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 // --- Exported functions ---
