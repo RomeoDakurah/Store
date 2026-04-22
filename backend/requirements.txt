@@ -7,3 +7,4 @@ python-dotenv
 pydantic-settings
 requests
 PyJWT
+passlib[bcrypt]
