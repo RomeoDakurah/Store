@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { api } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import BottomBar from "../components/BottonBar";
 
 export default function Checkout() {
   const { cart, clearCart } = useCart();
@@ -100,6 +101,7 @@ export default function Checkout() {
         </button>
       </div>
     </div>
+    <BottomBar />
     </div>
   );
 }

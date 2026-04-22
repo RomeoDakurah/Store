@@ -17,6 +17,9 @@ class OrderItemOut(BaseModel):
     quantity: int
     price: float
 
+    product_name: Optional[str] = None
+    variant_name: Optional[str] = None
+
     model_config = {
         "from_attributes": True
     }
@@ -25,6 +28,7 @@ class OrderItemOut(BaseModel):
 class OrderItemCreate(BaseModel):
     variant_id: int
     quantity: int
+
 
 class OrderCreate(BaseModel):
     shopper_name: str

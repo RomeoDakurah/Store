@@ -36,6 +36,7 @@ class OrderItem(Base):
     variant: Mapped["ProductVariant"] = relationship("ProductVariant")
 
 class OrderStatus(str, Enum):
-    PENDING = "pending"
-    COMPLETED = "completed"
-    CANCELED = "canceled"
+    pending = "pending"
+    shipped = "shipped"
+    completed = "completed"
+    cancelled = "cancelled"

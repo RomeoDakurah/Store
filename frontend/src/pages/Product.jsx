@@ -4,6 +4,7 @@ import { api } from "../api/api";
 import { useCart } from "../context/CartContext";
 import placeholder from "../assets/placeholder.png";
 import Navbar from "../components/Navbar";
+import BottomBar from "../components/BottonBar";
 import getImageUrl from "../utils/getImageUrl";
 
 export default function Product() {
@@ -223,6 +224,7 @@ export default function Product() {
           </div>
         </div>
       </div>
+      <BottomBar />
     </div>
   );
 }

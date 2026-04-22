@@ -1,8 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../api/api";
+import Navbar from "../components/Navbar";
+import BottomBar from "../components/BottonBar";
 
 export default function Orders() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const isAdmin = user?.is_admin === true;
 
@@ -27,7 +31,7 @@ export default function Orders() {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await api().patch(`/orders/${orderId}`, { status: newStatus });
+      await api().patch(`/orders/${orderId}/status`, { status: newStatus });
       setOrders((prev) =>
         prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
       );
@@ -39,25 +43,34 @@ export default function Orders() {
 
   const handleAdminEdit = async (orderId) => {
     const order = orders.find((o) => o.id === orderId);
+    if (!order) return;
+  
     const newName = prompt("Shopper Name:", order.shopper_name);
     const newEmail = prompt("Shopper Email:", order.shopper_email || "");
+  
     if (newName === null || newEmail === null) return;
-
+  
     try {
       await api().put(`/orders/${orderId}`, {
-        ...order,
         shopper_name: newName,
         shopper_email: newEmail,
+        status: order.status,
         items: order.items.map((i) => ({
-          product_id: i.product_id,
           variant_id: i.variant_id,
           quantity: i.quantity,
-          unit_price: i.unit_price,
+          unit_price: i.price, // backend expects unit_price
         })),
       });
+  
       setOrders((prev) =>
         prev.map((o) =>
-          o.id === orderId ? { ...o, shopper_name: newName, shopper_email: newEmail } : o
+          o.id === orderId
+            ? {
+                ...o,
+                shopper_name: newName,
+                shopper_email: newEmail,
+              }
+            : o
         )
       );
     } catch (err) {
@@ -70,7 +83,8 @@ export default function Orders() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div className="container py-4" style={{ maxWidth: "900px" }}>
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Navbar />
       <h2 className="mb-4">Orders</h2>
       {orders.length === 0 && <p>No orders yet.</p>}
 
@@ -102,8 +116,8 @@ export default function Orders() {
                     <td>{item.product_name}</td>
                     <td>{item.variant_name}</td>
                     <td>{item.quantity}</td>
-                    <td>${item.unit_price.toFixed(2)}</td>
-                    <td>${(item.quantity * item.unit_price).toFixed(2)}</td>
+                    <td>${item.price.toFixed(2)}</td>
+                    <td>${(item.quantity * item.price).toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -112,7 +126,7 @@ export default function Orders() {
               <strong>
                 Total: $
                 {order.items
-                  .reduce((sum, i) => sum + i.quantity * i.unit_price, 0)
+                  .reduce((sum, i) => sum + i.quantity * i.price, 0)
                   .toFixed(2)}
               </strong>
             </p>
@@ -122,20 +136,20 @@ export default function Orders() {
                 <button
                   className="btn btn-primary btn-sm"
                   onClick={() => handleStatusChange(order.id, "shipped")}
-                  disabled={order.status === "shipped" || order.status === "delivered"}
+                  disabled={order.status === "shipped" || order.status === "completed"}
                 >
                   Mark Shipped
                 </button>
                 <button
                   className="btn btn-success btn-sm"
-                  onClick={() => handleStatusChange(order.id, "delivered")}
-                  disabled={order.status === "delivered"}
+                  onClick={() => handleStatusChange(order.id, "completed")}
+                  disabled={order.status === "completed"}
                 >
-                  Mark Delivered
+                  Mark Completed
                 </button>
                 <button
                   className="btn btn-secondary btn-sm"
-                  onClick={() => handleAdminEdit(order.id)}
+                  onClick={() => navigate(`/admin/orders/${order.id}/edit`)}
                 >
                   Edit Order
                 </button>
@@ -144,6 +158,9 @@ export default function Orders() {
           </div>
         </div>
       ))}
+      <div className="mt-auto">
+        <BottomBar />
+      </div>
     </div>
   );
 }

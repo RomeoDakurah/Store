@@ -2,6 +2,8 @@ import { useCart } from "../context/CartContext";
 import { api } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import BottomBar from "../components/BottonBar";
+import CartTable from "../components/CartTable";
 
 export default function Cart() {
   const { cart, setCart, removeFromCart, clearCart } = useCart();
@@ -25,95 +27,38 @@ export default function Cart() {
         <p>Your cart is empty</p>
       ) : (
         <>
-          <table className="table table-bordered">
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Qty</th>
-                <th>Unit</th>
-                <th>Subtotal</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {cart.map((item, idx) => (
-                <tr key={idx}>
-                  <td>
-                    {item.name}
-                    <br />
-                    <small className="text-muted">
-                        {item.variant_label}
-                    </small>
-                  </td>
-                  <td>
-                  <div className="d-flex align-items-center gap-2">
-                    <button
-                    className="btn btn-sm btn-outline-secondary"
-                    style={{ border: "none" }}
-                    onClick={() =>
-                        setCart((prev) =>
-                        prev.map((i) =>
-                            i.variant_id === item.variant_id && i.quantity > 1
-                            ? { ...i, quantity: i.quantity - 1 }
-                            : i
-                        )
-                        )
-                    }
-                    >
-                    -
-                    </button>
-                    <span>{item.quantity}</span>
-                    <button
-                    className="btn btn-sm btn-outline-secondary"
-                    style={{ border: "none" }}
-                    onClick={() => {
-                        let reachedMax = false;
-
-                        setCart((prev) =>
-                        prev.map((i) => {
-                            if (i.variant_id === item.variant_id) {
-                            if (i.quantity < i.available_quantity) {
-                                return { ...i, quantity: i.quantity + 1 };
-                            } else {
-                                reachedMax = true; // flag to show alert later
-                            }
-                            }
-                            return i;
-                        })
-                        );
-
-                        if (reachedMax) alert("Reached max available quantity");
-                    }}
-                    >
-                    +
-                    </button>
-
-                </div>
-                  </td>
-                  <td>${item.unit_price.toFixed(2)}</td>
-                  <td>${(item.quantity * item.unit_price).toFixed(2)}</td>
-                  <td>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => removeFromCart(idx)}
-                    >
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <CartTable
+            cart={cart}
+            setCart={setCart}
+            removeItem={(variant_id) =>
+              setCart((prev) => prev.filter((i) => i.variant_id !== variant_id))
+            }
+          />
 
           <div className="d-flex justify-content-between align-items-center">
             <h4>Total: ${total.toFixed(2)}</h4>
-            <button className="btn btn-success" onClick={handleCheckout}>
+            <div className="d-flex gap-2">
+            <button
+              className="btn btn-outline-secondary btn-sm"
+              onClick={() => navigate("/")}
+            >
+              Add To Cart
+            </button>
+
+            <button
+              className="btn btn-success btn-sm"
+              onClick={handleCheckout}
+            >
               Checkout
             </button>
+            </div>
           </div>
         </>
       )}
-    </div>
+      </div>
+      <div className="mt-auto">
+        <BottomBar />
+      </div>
     </div>
   );
 }

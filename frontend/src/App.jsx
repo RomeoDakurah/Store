@@ -5,6 +5,7 @@ import Signup from "./pages/Signup";
 import Orders from "./pages/Orders";
 import AddProduct from "./pages/admin/AddProduct";
 import EditProduct from "./pages/admin/EditProduct";
+import EditOrder from "./pages/admin/EditOrder";
 import Cart from "./pages/Cart";
 import Product from "./pages/Product";
 import Checkout from "./pages/Checkout";
@@ -46,6 +47,15 @@ export default function App() {
         element={
           <PrivateRoute adminOnly>
             <EditProduct />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/admin/orders/:orderId/edit"
+        element={
+          <PrivateRoute adminOnly>
+            <EditOrder />
           </PrivateRoute>
         }
       />

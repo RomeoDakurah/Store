@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import placeholder from "../assets/placeholder.png";
 import Navbar from "../components/Navbar";
+import BottomBar from "../components/BottonBar";
 import getImageUrl from "../utils/getImageUrl";
 
 export default function Home() {
@@ -98,7 +99,6 @@ export default function Home() {
             if (selectedVariant?.images?.length > 0) imagesArray = selectedVariant.images;
             else if (product.images?.length > 0) imagesArray = product.images;
             else imagesArray = [{ image: placeholder }];
-            console.log(imagesArray);
 
             const imageIndex = selectedImageIndices[product.id] || 0;
             const mainImage = getImageUrl(imagesArray[imageIndex]?.image_url) || placeholder;
@@ -125,8 +125,14 @@ export default function Home() {
                             [product.id]: (imageIndex - 1 + imagesArray.length) % imagesArray.length
                           }))
                         }
-                        className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-md"
-                      >
+                        className="
+                        absolute left-2 top-1/2 -translate-y-1/2
+                        text-grey text-4xl font-bold
+                        bg-transparent border-none p-0
+                        opacity-70 hover:opacity-100
+                        "
+                        style={{ textShadow: "0 2px 6px rgba(0,0,0,0.8)" }}                      
+                        >
                         ◀
                       </button>
                       <button
@@ -136,7 +142,13 @@ export default function Home() {
                             [product.id]: (imageIndex + 1) % imagesArray.length
                           }))
                         }
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-md"
+                        className="
+                        absolute right-2 top-1/2 -translate-y-1/2
+                        text-grey text-4xl font-bold
+                        bg-transparent border-none p-0
+                        opacity-70 hover:opacity-100
+                        "
+                        style={{ textShadow: "0 2px 6px rgba(0,0,0,0.8)" }}
                       >
                         ▶
                       </button>
@@ -225,6 +237,7 @@ export default function Home() {
           })}
         </div>
       </section>
+      <BottomBar />
     </div>
   );
 }
