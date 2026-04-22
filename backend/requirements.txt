@@ -9,3 +9,4 @@ requests
 PyJWT
 passlib[bcrypt]
 pydantic[email]
+python-multipart
