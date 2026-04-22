@@ -8,3 +8,4 @@ pydantic-settings
 requests
 PyJWT
 passlib[bcrypt]
+pydantic[email]
