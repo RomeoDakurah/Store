@@ -14,7 +14,8 @@ app = FastAPI(title="Clothing Store API")
 
 origins = [
     "http://localhost:5173",  # Vite dev server
-    "http://127.0.0.1:5173"
+    "http://127.0.0.1:5173",
+    os.getenv("FRONTEND_URL"),
 ]
 
 app.add_middleware(
