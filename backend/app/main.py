@@ -16,6 +16,7 @@ origins = [
     "http://localhost:5173",  # Vite dev server
     "http://127.0.0.1:5173",
     "https://store-jade-ten.vercel.app",
+    "https://store-8o2tblm4x-romeodakurahs-projects.vercel.app",
 ]
 frontend_url = os.getenv("FRONTEND_URL")
 
