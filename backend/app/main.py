@@ -15,8 +15,12 @@ app = FastAPI(title="Clothing Store API")
 origins = [
     "http://localhost:5173",  # Vite dev server
     "http://127.0.0.1:5173",
-    os.getenv("FRONTEND_URL"),
+    "https://store-jade-ten.vercel.app",
 ]
+frontend_url = os.getenv("FRONTEND_URL")
+
+if frontend_url:
+    origins.append(frontend_url)
 
 app.add_middleware(
     CORSMiddleware,
